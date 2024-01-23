@@ -17,7 +17,7 @@ fun clearConsole(num: Int) {
  */
 fun printRow(row: IntArray) {
     println("-------------")
-    println(" " + row.joinToString("  ") { if (it == 0) " " else if (it == 1) "X" else "O" })
+    var linea = ("| " + row.joinToString("  ") { if (it == 0) "| |" else if (it == 1) "| X |" else "| O |" })
 }
 
 /**
@@ -26,10 +26,8 @@ fun printRow(row: IntArray) {
  * @return Devuelve la impresión del tablero.
  */
 fun printBoard(board: Array<IntArray>) {
-    clearConsole(20)
-    println("-------------")
+    clearConsole(3)
     board.forEach { printRow(it) }
-    println("-------------")
 }
 
 /**
@@ -65,17 +63,35 @@ fun isBoardFull(board: Array<IntArray>): Boolean {
 fun placePiece(board: Array<IntArray>, player: Int) {
     var salir = false
     while (!salir) {
+        try {
+            print("Elige la fila (1, 2, 3): ")
+            val row = readln()
+            if (row.isBlank()){
+                println("¡Gracias por jugar!")
+                salir = true
+            }else{
+                row.toInt().minus(1)
+            }
 
-        print("Elige la fila (1, 2, 3): ")
-        val row = readln().toInt().minus(1)
-        print("Elige la columna (1, 2, 3): ")
-        val col = readln().toInt().minus(1)
+            print("Elige la columna (1, 2, 3): ")
+            val col = readln()
+            if (col.isBlank()){
+                println("¡Gracias por jugar!")
+                salir = true
 
-        if (row in 1..3 && col in 1..3 && (board[row][col]).toString() == " ") {
-            board[row][col] = player
-            salir = true
-        } else {
-            println("**Error** Movimiento inv�lido. Int�ntalo de nuevo.")
+            }else{
+                (col.toInt().minus(1)).toString()
+            }
+
+            if (row.toInt() in 1 until 4 && col.toInt() in 1 until 4 && (board[row.toInt()][col.toInt()]).toString() == " ") {
+                board[row.toInt()][col.toInt()] = player
+                salir = true
+
+            } else {
+                println("**Error** Movimiento inv�lido. Int�ntalo de nuevo.")
+            }
+        }catch (e: NumberFormatException){
+            println("ENTRADA INVALIDA.")
         }
     }
 }
@@ -136,7 +152,7 @@ fun main() {
             println("El juego ha terminado en empate.")
             endGame = true
         }
-
         currentPlayer = switchPlayer(currentPlayer)
+
     }
 }

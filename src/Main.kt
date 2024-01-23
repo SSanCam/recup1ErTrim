@@ -1,24 +1,52 @@
-
+/**
+ * Limpiar consola.
+ * @param num va a ser el número de filas que vamos a 'limpiar'
+ * @return Los saltos de línea que se van a hacer para limpiar la consola.
+ */
 fun clearConsole(num: Int) {
-
+    for (clrLn in 1..num){
+        println()
+    }
 }
 
+/**
+ * Imprimir fila.
+ * @param row Es una de las filas del tablero.
+ * @return Deberá devolver un espacio en blanco, una 'X' o una 'O',
+ *          según si no ha sido ocupada o ha sido por alguno de los jugadores.
+ */
 fun printRow(row: IntArray) {
+    println("-------------")
     println(" " + row.joinToString("  ") { if (it == 0) " " else if (it == 1) "X" else "O" })
 }
 
-fun printBoard() {
-    clearConsole()
+/**
+ * Imprimir tablero.
+ * @param board Recibimos el tablero
+ * @return Devuelve la impresión del tablero.
+ */
+fun printBoard(board: Array<IntArray>) {
+    clearConsole(20)
     println("-------------")
     board.forEach { printRow(it) }
+    println("-------------")
 }
 
+/**
+ * Crear tablero:
+ * @param size es el número de líneas y columnas que forman el tablero.
+ * @return Devuelve el tablero vacío de 3x3
+ */
 fun createBoard(size: Int = 3) = Array(size) { IntArray(size) }
 
 fun checkWinner(board: Array<IntArray>): Int {
     return 0
 }
 
+/**
+ * Tablero completo:
+ * @return Devolverá el valor booleano True si el tablero está completo, sino devolverá False.
+ */
 fun isBoardFull(board: Array<IntArray>): Boolean {
     return board.all { row -> row.all { it != 0 } }
 }
@@ -26,9 +54,15 @@ fun isBoardFull(board: Array<IntArray>): Boolean {
 fun placePiece(board: Array<IntArray>, player: Int) {
     var salir = false
     while (!salir) {
+        //Agregamos la condición de salir del programa si se presiona enter sin introducir datos.
+        val input = readln()
+        if (input.isBlank()){
+            println("¡Gracias por jugar!")
+            salir = true
+        }
+
         print("Elige la fila (1, 2, 3): ")
         val row = readln().toInt().minus(1)
-
         print("Elige la columna (1, 2, 3): ")
         val col = readln().toInt().minus(1)
 
@@ -41,8 +75,12 @@ fun placePiece(board: Array<IntArray>, player: Int) {
     }
 }
 
-fun switchPlayer(player: Int): String {
-    return if (player == 1) "Jugador 1" else "Jugador2"
+/**
+ * @param player el jugador en partida
+ * @return Intercambian sus números para indicar el cambio de jugador.
+ */
+fun switchPlayer(player: Int): Int {
+    return if (player == 1) 2 else 1
 }
 
 
@@ -73,10 +111,10 @@ fun main() {
     val board = createBoard()
     var currentPlayer = 1
 
-    var winner = 0
+    var winner: Int
     var endGame = false
 
-    while (endGame) {
+    while (!endGame) {
         printBoard(board)
         placePiece(board, currentPlayer)
 

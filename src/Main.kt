@@ -39,6 +39,11 @@ fun printBoard(board: Array<IntArray>) {
  */
 fun createBoard(size: Int = 3) = Array(size) { IntArray(size) }
 
+/**
+ * Compronar ganador:
+ * @param Recibimos el tablero
+ * @return Comprobamos si algún jugador a conseguido 3 en línea o ha sido empate
+ */
 fun checkWinner(board: Array<IntArray>): Int {
     return 0
 }
@@ -51,15 +56,15 @@ fun isBoardFull(board: Array<IntArray>): Boolean {
     return board.all { row -> row.all { it != 0 } }
 }
 
+/**
+ * Colocar pieza:
+ * @param board Reibimos el tablero.
+ * @param player recibimos quién es el jugador actual
+ * @return Actualiza el tablero en la posición que indica el jugador actual
+ */
 fun placePiece(board: Array<IntArray>, player: Int) {
     var salir = false
     while (!salir) {
-        //Agregamos la condición de salir del programa si se presiona enter sin introducir datos.
-        val input = readln()
-        if (input.isBlank()){
-            println("¡Gracias por jugar!")
-            salir = true
-        }
 
         print("Elige la fila (1, 2, 3): ")
         val row = readln().toInt().minus(1)
@@ -106,7 +111,10 @@ fun switchPlayer(player: Int): Int {
     6. Desarrolla la función que está solo declarada "checkWinner", para comprobar si algún jugador ha ganado.
 */
 
-
+/**
+ * Función principal de la partida que ejecuta todas las funciones anteriores en orden.
+ *
+ */
 fun main() {
     val board = createBoard()
     var currentPlayer = 1
